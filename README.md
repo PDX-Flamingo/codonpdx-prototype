@@ -1,6 +1,5 @@
-#codonpdx Prototype Environment in Python
-#####Capstone Team Flamingo
-
+#codonpdx - Team (F)lamingo
+###Prototype Environment in Python
 
 ##### Links of Interest
 
