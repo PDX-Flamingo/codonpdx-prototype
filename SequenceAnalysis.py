@@ -6,7 +6,7 @@ from collections import deque
 from random import randint
 
 
-class SingleTSeqRecord():
+class SingleTSeqRecord(object):
     organism = None
     definition = None
     ncbi_taxid = None  # Taxonomy id
@@ -16,6 +16,10 @@ class SingleTSeqRecord():
 
 
     def __init__(self):
+        """
+
+        :rtype :
+        """
         self.data = []
         self.codons = {'TTT': 0, 'TTC': 0, 'TTA': 0, 'TTG': 0, 'CTT': 0,
                        'CTC': 0, 'CTA': 0, 'CTG': 0, 'ATT': 0, 'ATC': 0,
@@ -61,8 +65,10 @@ class SingleTSeqRecord():
     """TOKENIZE"""
 
     def __tokenize__(self, sequence):
-        while len(sequence) >= 3:
+        count = len(sequence)
+        while count >= 3:
             head, sequence = sequence[:3], sequence[3:]
+            count -= 3
             self.__token_queue__.append(head)
         return
 
@@ -85,7 +91,6 @@ class SingleTSeqRecord():
 
 
 class SequenceAnalysis(SingleTSeqRecord):
-    seq_stack = []
 
     def __init__(self):
         SingleTSeqRecord.__init__(self)
@@ -97,6 +102,15 @@ class SequenceAnalysis(SingleTSeqRecord):
             req = SingleTSeqRecord()
             req.load(seq)
             self.seq_stack.append(req)
+        return self
+
+    @property
+    def get_seq_stack(self):
+        return self.seq_stack
+    
+    @property
+    def pop(self):
+        return self.seq_stack.pop()
 
     @staticmethod
     def main():

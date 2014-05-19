@@ -1,3 +1,6 @@
+# NCBI Downloads
+*.tseqxml
+
 # Created by http://www.gitignore.io
 
 ### Python ###

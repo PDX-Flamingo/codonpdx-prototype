@@ -3,7 +3,7 @@ import os
 
 from collections import deque
 from NCBIQuery import NCBIQuery
-from SequenceAnalysis import SequenceAnalysis
+from SequenceAnalysis import SequenceAnalysis, SingleTSeqRecord
 from nose.tools import eq_, istest
 
 
@@ -52,6 +52,7 @@ class TestSequenceAnalysis():
         seq.add(tseq)
 
         for plate in seq.seq_stack:
+            assert isinstance(plate, SingleTSeqRecord)
             eq_(plate.organism, 'Porcine circovirus 1')
             eq_(plate.definition, 'Porcine circovirus 1 isolate PCV1-Hun, complete genome')
             eq_(plate.ncbi_taxid, '133704')
