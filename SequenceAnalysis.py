@@ -84,7 +84,7 @@ class SingleTSeqRecord(object):
         ### Process Tokens
         while self.__token_queue__:
             token = self.__token_queue__.popleft()
-            if self.codons.has_key(token):
+            if token in self.codons:
                 self.codons[token] += 1
 
 
@@ -95,9 +95,6 @@ class SequenceAnalysis(SingleTSeqRecord):
         self.data = []
         self.seq_stack = []
         self.total_seq_length = 0
-
-
-
 
     def add(self, batch_sequence):
         for seq in batch_sequence:

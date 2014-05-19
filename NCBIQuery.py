@@ -32,10 +32,10 @@ class NCBIQuery():
         handle.close()
         return record
 
-    def search_info(self, term):
+    def search_info(self, term, options=''):
         Entrez.email = self.email
         search_handle = Entrez.esearch(db="nucleotide",
-                                       term=term,
+                                       term=term+options,
                                        usehistory="y")
         search_results = Entrez.read(search_handle)
         search_handle.close()
@@ -53,10 +53,10 @@ class NCBIQuery():
                 "WebEnv": webenv, "QueryKey": query_key}
         return dict
 
-    def search(self, term, batch_size=50):
+    def search(self, organism='', options='', batch_size=50):
         Entrez.email = self.email
         search_handle = Entrez.esearch(db="nucleotide",
-                                       term=term,
+                                       term=organism+options,
                                        usehistory="y")
         search_results = Entrez.read(search_handle)
         search_handle.close()
@@ -68,9 +68,12 @@ class NCBIQuery():
         retmax = int(search_results["RetMax"])
         count = int(search_results["Count"])
 
+        if count == 0:
+            return
+
         assert retmax == len(gi_list)
         ### Download data referred to in the previous search in batches
-        tinyseqxml = term + '.tseqxml'
+        tinyseqxml = organism + '.tseqxml'
         if not os.path.isfile(tinyseqxml):
             widgets = [tinyseqxml + "\t", Percentage(), ' ',
                        Bar(marker=RotatingMarker()),

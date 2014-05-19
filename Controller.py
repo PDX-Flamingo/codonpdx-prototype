@@ -35,9 +35,9 @@ class Controller(object):
         puts()
         puts(colored.green("** CODON Prototype **"))
         puts()
-        puts("1. Galdieria sulphuraria (5 minute download)")
-        puts("2. Opuntia[orgn] and rpl16 (5 second download)")
-        puts("3. New and Updated Genomes Within Last 2 Days")
+        puts("1. Galdieria sulphuraria")
+        puts("2. Opuntia")
+        puts("3. New and Updated Genomes Within Last 3 Days")
         puts("4. Mycoplasma genitalium")
         puts()
 
@@ -45,26 +45,31 @@ class Controller(object):
 
         if int(choice) == 1:
             term = 'Galdieria sulphuraria'
+            option = '[Organism] AND srcdb_genbank[PROP]'
         elif int(choice) == 2:
-            term = 'Opuntia[orgn] and rpl16'
+            term = 'Opuntia'
+            option = '[Organism] AND srcdb_genbank[PROP]'
         elif int(choice) == 3:
-            term = ("all[FILT] AND (" + return_date_from_now(2) +
+            term = 'all'
+            option = ("[FILT] AND (" + return_date_from_now(3) +
                     "[PDAT]:" + return_date_from_now(0) +
-                    "[PDAT] OR " + return_date_from_now(2) +
+                    "[PDAT] OR " + return_date_from_now(3) +
                     "[MDAT]:" + return_date_from_now(0) +
-                    "[MDAT])"
-                    )
+                    "[MDAT]) AND srcdb_genbank[PROP]"
+                      )
         elif int(choice) == 4:
-            term = 'Mycoplasma genitalium[Organism] AND srcdb_genbank[PROP]'
+            term = 'Mycoplasma genitalium'
+            option = '[Organism] AND srcdb_genbank[PROP]'
         else:
             term = choice
+            option = ''
 
         print "Searching for: ", term
         print
 
-        info = query.search_info(term)
+        info = query.search_info(term, option)
         puts(colored.yellow("Fetching " + str(info["Count"]) + " Results"))
-        results = query.search(term)
+        results = query.search(term, option)
 
         '''
         for tseq in results:
