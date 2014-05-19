@@ -111,7 +111,7 @@ class TestNCBIQuery():
 
     @istest
     def test_search(self):
-        results = NCBIQuery().search(self.term1)
+        results = NCBIQuery().search(self.term1, progress=False)
         eq_(results[0].tseq_gi.string, "594139292")
         eq_(results[0].tseq_accver.string, "KJ408799.1")
         eq_(results[0].tseq_taxid.string, "133704")

@@ -22,7 +22,8 @@ class NCBIQuery():
     def __init__(self, email="ptseng@pdx.edu", recursionlimit=20000):
         self.data = []
         sys.setrecursionlimit(recursionlimit)
-        self.rows, self.columns = os.popen('stty size', 'r').read().split()
+        #self.rows, self.columns = os.popen('stty size', 'r').read().split()
+        self.columns = 125
         self.email = email
 
     def server_info(self):
@@ -53,7 +54,7 @@ class NCBIQuery():
                 "WebEnv": webenv, "QueryKey": query_key}
         return dict
 
-    def search(self, organism='', options='', batch_size=50):
+    def search(self, organism='', options='', batch_size=50, progress=True):
         Entrez.email = self.email
         search_handle = Entrez.esearch(db="nucleotide",
                                        term=organism+options,
@@ -83,7 +84,7 @@ class NCBIQuery():
                                maxval=count,
                                term_width=int(self.columns) - 20)
             for start in range(0, count, batch_size):
-                end = min(count, start + batch_size)
+                #end = min(count, start + batch_size)
                 #print("Going to download record %i to %i" % (start+1, end))
                 fetch_handle = Entrez.efetch(db="nucleotide",
                                              rettype="fasta",
@@ -96,12 +97,13 @@ class NCBIQuery():
                 fetch_handle.close()
                 out_handle.write(data)
                 status = (start + 1) / float(count)
-                if pbar.seconds_elapsed == 0:
+                if progress and pbar.seconds_elapsed == 0:
                     pbar.start()
-                if status > 0.001:
+                if status > 0.001 and progress:
                     pbar.term_width = int(self.columns) - 20
                     pbar.update(status * count)
-            pbar.finish()
+            if progress:
+                pbar.finish()
             out_handle.close()
 
         ## At this point, file may be a stream of multiple XML documents.
@@ -114,9 +116,4 @@ class NCBIQuery():
         print "Finished Parsing XML in " + str(end - start) + " ms"
 
         return soup.find_all('tseq')
-
-
-
-
-
 

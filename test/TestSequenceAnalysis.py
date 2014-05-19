@@ -47,7 +47,7 @@ class TestSequenceAnalysis():
 
     @istest
     def test_load_single_sequence(self):
-        tseq = NCBIQuery().search(self.term1)
+        tseq = NCBIQuery().search(self.term1, progress=False)
         seq = SequenceAnalysis()
         seq.add(tseq)
 
