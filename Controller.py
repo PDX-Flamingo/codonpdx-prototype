@@ -37,7 +37,7 @@ class Controller(object):
         puts()
         puts("1. Galdieria sulphuraria")
         puts("2. Opuntia")
-        puts("3. New and Updated Genomes Within Last 3 Days")
+        puts("3. New and Updated Genomes Within Last 4 Days")
         puts("4. Mycoplasma genitalium")
         puts()
 
@@ -51,9 +51,9 @@ class Controller(object):
             option = '[Organism] AND srcdb_genbank[PROP]'
         elif int(choice) == 3:
             term = 'all'
-            option = ("[FILT] AND (" + return_date_from_now(3) +
+            option = ("[FILT] AND (" + return_date_from_now(4) +
                     "[PDAT]:" + return_date_from_now(0) +
-                    "[PDAT] OR " + return_date_from_now(3) +
+                    "[PDAT] OR " + return_date_from_now(4) +
                     "[MDAT]:" + return_date_from_now(0) +
                     "[MDAT]) AND srcdb_genbank[PROP]"
                       )
