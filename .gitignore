@@ -1,6 +1,9 @@
 # NCBI Downloads
 *.tseqxml
 
+# Profiles
+*.profile
+
 # Created by http://www.gitignore.io
 
 ### Python ###

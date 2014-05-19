@@ -62,14 +62,12 @@ class SingleTSeqRecord(object):
         puts()
         return
 
-    """TOKENIZE"""
+    """TOKENIZE (Optimized)"""
 
     def __tokenize__(self, sequence):
-        count = len(sequence)
-        while count >= 3:
-            head, sequence = sequence[:3], sequence[3:]
-            count -= 3
-            self.__token_queue__.append(head)
+        indexes = [(3*x, (3*x)+3) for x in range(len(sequence)/3)]
+        for index in indexes:
+            self.__token_queue__.append(sequence[index[0]:index[1]])
         return
 
     """Load"""
@@ -81,7 +79,7 @@ class SingleTSeqRecord(object):
         self.ncbi_taxid = seq.tseq_taxid.string
         self.definition = seq.tseq_defline.string
         self.ncbi_seqlength = seq.tseq_length.string
-        self.__tokenize__(seq.tseq_sequence.string)
+        self.__tokenize__(str(seq.tseq_sequence.string))
 
         ### Process Tokens
         while self.__token_queue__:
@@ -96,13 +94,20 @@ class SequenceAnalysis(SingleTSeqRecord):
         SingleTSeqRecord.__init__(self)
         self.data = []
         self.seq_stack = []
+        self.total_seq_length = 0
+
+
+
 
     def add(self, batch_sequence):
         for seq in batch_sequence:
             req = SingleTSeqRecord()
             req.load(seq)
+            self.total_seq_length += self.num(seq.tseq_length.string)
             self.seq_stack.append(req)
+        puts(colored.yellow("Total Length of Sequences: " + str(self.total_seq_length)))
         return self
+
 
     @property
     def get_seq_stack(self):
@@ -111,6 +116,13 @@ class SequenceAnalysis(SingleTSeqRecord):
     @property
     def pop(self):
         return self.seq_stack.pop()
+
+    @staticmethod
+    def num(s):
+        try:
+            return int(s)
+        except ValueError:
+            return float(s)
 
     @staticmethod
     def main():

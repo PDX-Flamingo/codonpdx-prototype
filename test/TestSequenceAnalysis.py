@@ -60,6 +60,5 @@ class TestSequenceAnalysis():
             eq_(plate.ncbi_assession, 'KJ408799.1')
             eq_(plate.ncbi_seqlength, '1759')
             eq_(len(plate.__token_queue__), 0)  # Should be processed
-            plate.print_dictionary()
 
 
