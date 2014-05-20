@@ -1,6 +1,10 @@
+from __future__ import with_statement
+
 """ Unit Tests for SequenceAnalysis """
 import os
 
+from StringIO import StringIO
+from TokenizeMRJob import TokenizeMRJob
 from collections import deque
 from NCBIQuery import NCBIQuery
 from SequenceAnalysis import SequenceAnalysis, SingleTSeqRecord
@@ -62,3 +66,19 @@ class TestSequenceAnalysis():
             eq_(len(plate.__token_queue__), 0)  # Should be processed
 
 
+    @istest
+    def test_tokenize_mapreduce(self):
+        mr_job = TokenizeMRJob(['-r', 'local', '--no-conf', '-'])
+        mr_job.sandbox(stdin=StringIO("AAATTTCCCGGG"))
+
+        tokens = []
+        counts = []
+        with mr_job.make_runner() as runner:
+            runner.run()
+            for line in runner.stream_output():
+                key, value = mr_job.parse_output_line(line)
+                tokens.append(key)
+                counts.append(value)
+
+        eq_(tokens, ['AAA', 'CCC', 'GGG', 'TTT'])
+        eq_(counts, [1, 1, 1, 1])

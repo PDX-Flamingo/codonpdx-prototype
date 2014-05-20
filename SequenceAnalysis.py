@@ -1,6 +1,9 @@
 # !/usr/bin/env python
 """ Codon Usage Analysis"""
 
+from TokenizeMRJob import TokenizeMRJob
+
+from StringIO import StringIO
 from clint.textui import puts, colored
 from collections import deque
 from random import randint
@@ -70,6 +73,18 @@ class SingleTSeqRecord(object):
             self.__token_queue__.append(sequence[index[0]:index[1]])
         return
 
+    """TOKENIZE (MapReduce)"""
+    def __tokenize_mapreduce__(self, sequence):
+        mr_job = TokenizeMRJob(args=['-r', 'local', '--no-conf', '-'])
+        mr_job.sandbox(stdin=StringIO(sequence))
+        with mr_job.make_runner() as runner:
+            runner.run()
+            for line in runner.stream_output():
+                key, value = mr_job.parse_output_line(line)
+                if key in self.codons:
+                    self.codons[key] = value
+        return
+
     """Load"""
 
     def load(self, seq):
@@ -86,6 +101,18 @@ class SingleTSeqRecord(object):
             token = self.__token_queue__.popleft()
             if token in self.codons:
                 self.codons[token] += 1
+
+        """Load (MapReduce)"""
+
+    def load_mapreduce(self, seq):
+        self.organism = seq.tseq_orgname.string
+        self.ncbi_geninfo = seq.tseq_gi.string
+        self.ncbi_assession = seq.tseq_accver.string
+        self.ncbi_taxid = seq.tseq_taxid.string
+        self.definition = seq.tseq_defline.string
+        self.ncbi_seqlength = seq.tseq_length.string
+        self.__tokenize_mapreduce__(str(seq.tseq_sequence.string))
+
 
 
 class SequenceAnalysis(SingleTSeqRecord):

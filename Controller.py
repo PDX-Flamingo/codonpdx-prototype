@@ -101,11 +101,12 @@ class Controller(object):
         codonanalysis = SequenceAnalysis().add(results)
         end = CURRENT_MILLI_TIME()
         print "Tokenize and Analyze in " + str(end - start) + " ms"
+
         seqs = codonanalysis.get_seq_stack
 
         for seq in seqs:
             assert isinstance(seq, SingleTSeqRecord)
-            #seq.print_dictionary()
+            seq.print_dictionary()
 
 
 if __name__ == "__main__":
