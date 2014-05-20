@@ -1,8 +1,6 @@
 # !/usr/bin/env python
 """ Codon Usage Analysis"""
 
-import threading
-
 from clint.textui import puts, colored
 from collections import deque
 from random import randint
@@ -64,28 +62,13 @@ class SingleTSeqRecord(object):
         puts()
         return
 
-    """TOKENIZE (Optimized)"""
+    """TOKENIZE (Single Thread, Optimized)"""
     def __tokenize__(self, sequence):
-
-        def target(self, sequence, indexes):
+        indexes = deque((3*x, (3*x)+3) for x in range(len(sequence)/3))
+        while indexes:
             index = indexes.popleft()
             self.__token_queue__.append(sequence[index[0]:index[1]])
-
-        threads = []
-
-        indexes = deque((3*x, (3*x)+3) for x in range(len(sequence)/3))
-
-        for i in range(4):
-            t = threading.Thread(target=target, args=(self, sequence, indexes))
-            t.daemon = True
-            t.start()
-            threads.append(t)
-
-        [t.join() for t in threads]
-
         return
-
-
 
     """Load"""
 

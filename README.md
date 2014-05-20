@@ -4,23 +4,23 @@
 ##### Benchmarks
 ```
     Core Nucleotide db
-    Last Updated: 2014/05/16 09:56
-    Total Records: 132454040
-    
+    Last Updated: 2014/05/19 17:56
+    Total Records: 132483076
+
     ** CODON Prototype **
-    
+
     1. Galdieria sulphuraria
     2. Opuntia
     3. New and Updated Genomes Within Last 4 Days
     4. Mycoplasma genitalium
-    
+
     Please enter a species: 3
     Searching for:  all
-    
-    Fetching 4608 Results
-    Finished Parsing XML in 2945 ms
+
+    Fetching 46573 Results
+    Finished Parsing XML in 4495 ms
     Total Length of Sequences: 58870093
-    Tokenize and Analyze in 13097 ms
+    Tokenize and Analyze in 32640 ms
 ```
 
 ##### Links of Interest
