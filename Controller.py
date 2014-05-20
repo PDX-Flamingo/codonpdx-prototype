@@ -39,6 +39,9 @@ class Controller(object):
         puts("2. Opuntia")
         puts("3. New and Updated Genomes Within Last 4 Days")
         puts("4. Mycoplasma genitalium")
+        puts("5. Pseudomonas aeruginosa")
+        puts("6. Human Chromosome 2")
+        puts()
         puts()
 
         choice = raw_input(colored.cyan("Please enter a species: "))
@@ -60,6 +63,12 @@ class Controller(object):
         elif int(choice) == 4:
             term = 'Mycoplasma genitalium'
             option = '[Organism] AND srcdb_genbank[PROP]'
+        elif int(choice) == 5:
+            term = 'BAUN01000001[Accession]'
+            option = ''
+        elif int(choice) == 6:
+            term = 'KE150089.1[Accession]'
+            option = ''
         else:
             term = choice
             option = ''
