@@ -9,6 +9,7 @@ from clint.textui import colored, puts
 from NCBIQuery import NCBIQuery
 from SequenceAnalysis import SequenceAnalysis, SingleTSeqRecord
 
+
 """ Utility Functions """
 CURRENT_MILLI_TIME = lambda: int(round(time.clock() * 1000))
 
@@ -32,6 +33,9 @@ class Controller(object):
         puts(colored.blue("Last Updated: " + record["DbInfo"]["LastUpdate"]))
         puts(colored.blue("Total Records: " + record["DbInfo"]["Count"]))
 
+        for field in record["DbInfo"]["FieldList"]:
+            print("%(Name)s, %(FullName)s, %(Description)s" % field)
+
         puts()
         puts(colored.green("** CODON Prototype **"))
         puts()
@@ -41,6 +45,7 @@ class Controller(object):
         puts("4. Mycoplasma genitalium")
         puts("5. Pseudomonas aeruginosa")
         puts("6. Human Chromosome 2")
+        puts("7. Fusobacterium nucleatum")
         puts()
         puts()
 
@@ -68,6 +73,9 @@ class Controller(object):
             option = ''
         elif int(choice) == 6:
             term = 'KE150089.1[Accession]'
+            option = ''
+        elif int(choice) == 7:
+            term = 'NZ_AARG01000014.1[Accession]'
             option = ''
         else:
             term = choice
